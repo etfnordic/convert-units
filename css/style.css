@@ -136,6 +136,14 @@ input:focus, select:focus{border-color: rgba(0,245,160,0.55)}
 .swap{
   display:flex; justify-content:center; margin: 6px 0 14px;
 }
+select {
+  color-scheme: dark;
+}
+select option {
+  background: #0e1020;   /* mörk bakgrund */
+  color: #f3f5ff;        /* ljus text */
+}
+
 .swap button{
   cursor:pointer;
   width:44px; height:44px;
