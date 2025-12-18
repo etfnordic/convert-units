@@ -30,21 +30,40 @@ function setupTemperatureConverter() {
   }
 
   function doConvert(){
-    const raw = amountEl.value.trim().replace(",", ".");
-    const v = Number(raw);
-    if(!raw || !Number.isFinite(v)){
-      resultMain.textContent="Result will appear here…";
-      resultSub.textContent="Enter a value to convert.";
-      return;
-    }
-    const c = toC(v, fromEl.value);
-    const out = fromC(c, toEl.value);
-    const toSym = units.find(x=>x.key===toEl.value).symbol;
-    const fromSym = units.find(x=>x.key===fromEl.value).symbol;
+  const raw = amountEl.value.trim().replace(",", ".");
+  const v = Number(raw);
 
-    resultMain.textContent = `${out.toFixed(4).replace(/\.?0+$/,"")} ${toSym}`;
-    resultSub.textContent = `${v} ${fromSym} = ${out.toFixed(4).replace(/\.?0+$/,"")} ${toSym}`;
+  if(!raw || !Number.isFinite(v)){
+    resultMain.textContent = "Result will appear here…";
+    resultSub.textContent = "Enter a value to convert.";
+    return;
   }
+
+  const from = fromEl.value;
+  const to = toEl.value;
+
+  // Convert value
+  const c = toC(v, from);
+  const out = fromC(c, to);
+
+  const toSym = units.find(x => x.key === to).symbol;
+  const fromSym = units.find(x => x.key === from).symbol;
+
+  const outTxt = out.toFixed(6).replace(/\.?0+$/,"");
+  resultMain.textContent = `${outTxt} ${toSym}`;
+
+  // Show formula instead of 1 = x
+  let formula = "";
+
+  if (from === "c" && to === "f") formula = "Formula: (°C × 9/5) + 32";
+  else if (from === "f" && to === "c") formula = "Formula: (°F − 32) × 5/9";
+  else if (from === "c" && to === "k") formula = "Formula: °C + 273.15";
+  else if (from === "k" && to === "c") formula = "Formula: K − 273.15";
+  else if (from === "f" && to === "k") formula = "Formula: (°F − 32) × 5/9 + 273.15";
+  else if (from === "k" && to === "f") formula = "Formula: (K − 273.15) × 9/5 + 32";
+
+  resultSub.textContent = formula;
+}
 
   amountEl.addEventListener("input", doConvert);
   fromEl.addEventListener("change", doConvert);
