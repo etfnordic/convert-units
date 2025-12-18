@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Area Converter</title>
+  <meta name="description" content="Free length converter. Convert meters, centimeters, inches, feet, yards and miles instantly." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand">
+        <h1>ConverterBase</h1>
+        <p>Area Converter</p>
+      </div>
+      <nav class="nav">
+        <a class="chip" href="index.html">Home</a>
+        <a class="chip" href="privacy-policy.html">Privacy</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- AdSense plats 1 -->
+  <div class="ad-slot">Ad slot (top). Replace with AdSense later.</div>
+
+  <main class="container">
+    <section class="section converter">
+      <h1>Area Converter</h1>
+
+      <div class="form-row">
+        <label for="amount">Amount</label>
+        <input id="amount" inputmode="decimal" placeholder="Enter amount" />
+      </div>
+
+      <div class="form-row">
+        <label for="fromUnit">From unit</label>
+        <select id="fromUnit"></select>
+      </div>
+
+      <div class="swap">
+        <button id="swapBtn" type="button" aria-label="Swap units">⇄</button>
+      </div>
+
+      <div class="form-row">
+        <label for="toUnit">To unit</label>
+        <select id="toUnit"></select>
+      </div>
+
+      <div class="result" aria-live="polite">
+        <strong id="resultMain">Result will appear here…</strong>
+        <span id="resultSub">Enter a value to convert.</span>
+      </div>
+    </section>
+
+    <!-- AdSense plats 2 (efter interaktion) -->
+    <div class="ad-slot">Ad slot (after result). Replace with AdSense later.</div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      © <span id="year"></span> ConverterBase • <a href="privacy-policy.html">Privacy Policy</a>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/converter-engine.js"></script>
+  <script src="js/volume.js"></script>
+</body>
+</html>
