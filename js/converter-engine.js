@@ -33,15 +33,29 @@ function setupFactorConverter(config) {
   fromEl.value = config.defaultFrom;
   toEl.value = config.defaultTo;
 
-  function doConvert() {
-    const raw = amountEl.value.trim().replace(",", ".");
-    const value = Number(raw);
+ function doConvert() {
+  const raw = amountEl.value.trim().replace(",", ".");
+  const value = Number(raw);
 
-    if (!raw || !Number.isFinite(value)) {
-      resultMain.textContent = "Result will appear here…";
-      resultSub.textContent = "Enter a value to convert.";
-      return;
-    }
+  const from = config.unitMap[fromEl.value];
+  const to = config.unitMap[toEl.value];
+
+  // If input is empty/invalid
+  if (!raw || !Number.isFinite(value)) {
+    resultMain.textContent = "Result will appear here…";
+    resultSub.textContent = "Enter a value to convert.";
+    return;
+  }
+
+  // Main result (user value)
+  const res = convertByFactors(value, from.factor, to.factor);
+  resultMain.textContent = `${formatNumber(res)} ${to.symbol}`;
+
+  // ✅ Always show 1 = x
+  const res1 = convertByFactors(1, from.factor, to.factor);
+  resultSub.textContent = `1 ${from.symbol} = ${formatNumber(res1)} ${to.symbol}`;
+}
+
 
     const fromKey = fromEl.value;
     const toKey = toEl.value;
