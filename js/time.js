@@ -9,6 +9,7 @@ const timeConfig = {
     {key:"day",label:"Day", symbol:"day"},
     {key:"week",label:"Week", symbol:"week"},
     {key:"month",label:"Month", symbol:"month"},
+    {key:"year",label:"Year", symbol:"year"},
   ],
   unitMap:{
     ms:{factor:0.001, symbol:"ms"},
@@ -18,6 +19,7 @@ const timeConfig = {
     day:{factor:86400, symbol:"day"},
     week:{factor:604800, symbol:"week"},
     month:{factor:2629800, symbol:"month"},
+    year:{factor:31556952, symbol:"year"},
   };
 };
 setupFactorConverter(timeConfig);
