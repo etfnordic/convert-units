@@ -20,6 +20,6 @@ const timeConfig = {
     week:{factor:604800, symbol:"week"},
     month:{factor:2629800, symbol:"month"},
     year:{factor:31556952, symbol:"year"},
-  };
+  }
 };
 setupFactorConverter(timeConfig);
