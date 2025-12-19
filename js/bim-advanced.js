@@ -16,25 +16,47 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultMain = document.getElementById("resultMain");
   const resultSub = document.getElementById("resultSub");
 
-  if (!unitSystem || !metricFields || !imperialFields || !resultMain || !resultSub) {
-    console.error("BMI: Missing required elements.");
-    return;
+  // Quick sanity check (if any ID is wrong, we want to know)
+  const required = { unitSystem, sexEl, ageEl, metricFields, imperialFields, heightCm, weightKg, heightFt, heightIn, weightLb, resultMain, resultSub };
+  for (const [k, v] of Object.entries(required)) {
+    if (!v) {
+      console.error("BMI: missing element:", k);
+      return;
+    }
   }
 
-  const sanitize = (el) => {
-    if (!el) return;
+  // ---- Parsing helpers ----
+  // If your converter-engine.js provides evalMathExpression / sanitizeExpressionInput, use them.
+  // Otherwise fallback to simple numeric parsing (so BMI ALWAYS works).
+  const hasEval = typeof window.evalMathExpression === "function";
+  const hasSan = typeof window.sanitizeExpressionInput === "function";
+
+  function sanitizeInput(el) {
     el.addEventListener("input", () => {
-      const cleaned = sanitizeExpressionInput(el.value);
-      if (cleaned !== el.value) el.value = cleaned;
+      if (hasSan) {
+        const cleaned = window.sanitizeExpressionInput(el.value);
+        if (cleaned !== el.value) el.value = cleaned;
+      } else {
+        // fallback: allow digits, comma/dot, + - * / ^ ( ) and spaces
+        el.value = el.value.replace(/[^0-9+\-*/^()., \t]/g, "");
+      }
+      calc();
     });
-  };
+  }
 
-  [ageEl, heightCm, weightKg, heightFt, heightIn, weightLb].forEach(sanitize);
+  function parseVal(s) {
+    const str = (s || "").trim();
+    if (!str) return NaN;
 
-  const parseVal = (s) => {
-    const v = evalMathExpression((s || "").trim());
+    if (hasEval) {
+      const v = window.evalMathExpression(str);
+      return Number.isFinite(v) ? v : NaN;
+    }
+
+    // fallback numeric parse (comma -> dot)
+    const v = Number(str.replace(",", "."));
     return Number.isFinite(v) ? v : NaN;
-  };
+  }
 
   function bmiCategory(bmi) {
     if (bmi < 18.5) return "Underweight";
@@ -43,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return "Obesity";
   }
 
-  // Deurenberg estimate (approx), needs age + sex
+  // Optional body fat estimate (approx)
   // BF% ≈ 1.20*BMI + 0.23*Age − 10.8*Sex − 5.4   (male=1, female=0)
   function bodyFatEstimate(bmi, age, sex) {
     if (!Number.isFinite(age) || age <= 0) return null;
@@ -71,18 +93,25 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sys === "metric") {
       const hCm = parseVal(heightCm.value);
       const kg = parseVal(weightKg.value);
+
       if (Number.isFinite(hCm) && hCm > 0) hMeters = hCm / 100;
-      wKg = kg;
+      if (Number.isFinite(kg) && kg > 0) wKg = kg;
     } else {
+      // ✅ allow either field:
+      // - only feet filled -> inches = 0
+      // - only inches filled -> feet = 0
+      // - both -> combine
       const ft = parseVal(heightFt.value);
       const inch = parseVal(heightIn.value);
       const lb = parseVal(weightLb.value);
 
-      if (Number.isFinite(ft) && ft >= 0 && Number.isFinite(inch) && inch >= 0) {
-        const totalIn = ft * 12 + inch;
-        if (totalIn > 0) hMeters = totalIn * 0.0254;
-      }
-      if (Number.isFinite(lb)) wKg = lb * 0.45359237;
+      const ftSafe = (Number.isFinite(ft) && ft >= 0) ? ft : 0;
+      const inSafe = (Number.isFinite(inch) && inch >= 0) ? inch : 0;
+
+      const totalIn = ftSafe * 12 + inSafe;
+      if (totalIn > 0) hMeters = totalIn * 0.0254;
+
+      if (Number.isFinite(lb) && lb > 0) wKg = lb * 0.45359237;
     }
 
     if (!Number.isFinite(hMeters) || hMeters <= 0 || !Number.isFinite(wKg) || wKg <= 0) {
@@ -108,10 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
   unitSystem.addEventListener("change", calc);
   sexEl.addEventListener("change", calc);
 
-  [ageEl, heightCm, weightKg, heightFt, heightIn, weightLb].forEach(el => {
-    if (!el) return;
-    el.addEventListener("input", calc);
-  });
+  // Sanitize + recalc on input
+  [ageEl, heightCm, weightKg, heightFt, heightIn, weightLb].forEach(sanitizeInput);
 
   // Initial
   calc();
