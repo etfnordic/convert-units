@@ -3,19 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
   <title>BMI Calculator – Metric & Imperial | ConverterBase</title>
-  <meta name="description" content="Free BMI calculator for metric and imperial units. Includes BMI scale and optional body fat estimate (approx.)." />
+  <meta name="description" content="Free BMI calculator using metric or imperial units. Includes BMI scale, categories, and optional body fat estimate." />
+
   <link rel="stylesheet" href="css/style.css" />
 
-  <!-- Small extra styling just for the BMI scale bar -->
+  <!-- BMI scale styles -->
   <style>
     .bmi-scale {
-      margin-top: 14px;
+      margin-top: 18px;
       border: 1px solid rgba(255,255,255,0.10);
       border-radius: 16px;
       padding: 14px;
       background: rgba(255,255,255,0.03);
     }
+
     .bmi-track {
       position: relative;
       height: 14px;
@@ -24,7 +27,12 @@
       border: 1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.06);
     }
-    .bmi-seg { height: 100%; float:left; }
+
+    .bmi-seg {
+      height: 100%;
+      float: left;
+    }
+
     .bmi-marker {
       position: absolute;
       top: -7px;
@@ -34,17 +42,34 @@
       box-shadow: 0 0 0 3px rgba(0,0,0,0.35);
       border-radius: 2px;
       transform: translateX(-1px);
+      transition: left 220ms ease;
     }
+
+    .bmi-marker::before {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.35);
+    }
+
     .bmi-scale-labels {
-      display:flex;
-      justify-content: space-between;
-      gap: 10px;
+      position: relative;
+      height: 22px;
       margin-top: 10px;
-      color: var(--muted);
       font-size: 0.95rem;
-      line-height: 1.3;
+      color: var(--muted);
     }
-    .bmi-scale-labels span { white-space: nowrap; }
+
+    .bmi-scale-labels span {
+      position: absolute;
+      white-space: nowrap;
+    }
   </style>
 </head>
 
@@ -73,7 +98,7 @@
         <label for="unitSystem">Unit system</label>
         <select id="unitSystem">
           <option value="metric">Metric (cm, kg)</option>
-          <option value="imperial">Imperial (ft/in, lb)</option>
+          <option value="imperial">Imperial (ft / in, lb)</option>
         </select>
       </div>
 
@@ -90,7 +115,7 @@
         <input id="age" inputmode="decimal" placeholder="e.g. 26" />
       </div>
 
-      <!-- Metric fields -->
+      <!-- Metric -->
       <div id="metricFields">
         <div class="form-row">
           <label for="heightCm">Height (cm)</label>
@@ -103,16 +128,16 @@
         </div>
       </div>
 
-      <!-- Imperial fields -->
+      <!-- Imperial -->
       <div id="imperialFields" style="display:none;">
         <div class="form-row">
           <label>Height (ft / in)</label>
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
             <input id="heightFt" inputmode="decimal" placeholder="Feet (e.g. 5)" />
             <input id="heightIn" inputmode="decimal" placeholder="Inches (e.g. 10)" />
           </div>
-          <div style="margin-top:8px; color: var(--muted); font-size: 0.95rem;">
-            Tip: you can fill only feet or only inches.
+          <div style="margin-top:8px; font-size:0.95rem; color:var(--muted);">
+            You may fill only feet or only inches.
           </div>
         </div>
 
@@ -126,40 +151,48 @@
         <strong id="resultMain">Result will appear here…</strong>
         <span id="resultSub">Enter your height and weight.</span>
 
-        <!-- BMI scale bar -->
+        <!-- BMI SCALE -->
         <div class="bmi-scale" id="bmiScale" style="display:none;">
           <div class="bmi-track">
-            <!-- segments: under / normal / over / obese -->
-            <div class="bmi-seg" style="width: 18.5%; background: rgba(0, 153, 255, 0.35);"></div>
-            <div class="bmi-seg" style="width: 6.5%; background: rgba(0, 200, 120, 0.35);"></div>
-            <div class="bmi-seg" style="width: 5%; background: rgba(255, 200, 0, 0.35);"></div>
-            <div class="bmi-seg" style="width: 70%; background: rgba(255, 80, 80, 0.25);"></div>
+            <!-- Scale 10 → 45 -->
+            <div class="bmi-seg" style="width:24.2857%; background:rgba(0,153,255,0.35);"></div>
+            <div class="bmi-seg" style="width:18.5714%; background:rgba(0,200,120,0.35);"></div>
+            <div class="bmi-seg" style="width:14.2857%; background:rgba(255,200,0,0.35);"></div>
+            <div class="bmi-seg" style="width:42.8571%; background:rgba(255,80,80,0.25);"></div>
 
-            <div class="bmi-marker" id="bmiMarker" style="left: 0%;"></div>
+            <div class="bmi-marker" id="bmiMarker" title="BMI"></div>
           </div>
 
           <div class="bmi-scale-labels">
-            <span>Under 18.5</span>
-            <span>18.5–24.9</span>
-            <span>25–29.9</span>
-            <span>30+</span>
+            <span style="left:0%;">Under 18.5</span>
+            <span style="left:24.2857%;">18.5–24.9</span>
+            <span style="left:42.8571%;">25–29.9</span>
+            <span style="left:57.1428%;">30+</span>
           </div>
         </div>
       </div>
     </section>
 
     <div class="ad-slot">Ad slot (after result). Replace with AdSense later.</div>
+
+    <section class="section">
+      <h3>How BMI works</h3>
+      <p style="color:var(--muted); line-height:1.7;">
+        BMI = weight (kg) / height² (m²). BMI is a screening tool and does not directly
+        measure body fat or health. The body fat percentage shown is an approximation.
+      </p>
+    </section>
   </main>
 
   <footer class="footer">
     <div class="container">
-      © <span id="year"></span> ConverterBase • <a href="privacy-policy.html">Privacy Policy</a>
+      © <span id="year"></span> ConverterBase •
+      <a href="privacy-policy.html">Privacy Policy</a>
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script src="js/common.js?v=1"></script>
-
-  <!-- IMPORTANT: cache-bust these so GitHub Pages doesn't serve old JS -->
   <script src="js/converter-engine.js?v=6"></script>
   <script src="js/bmi-advanced.js?v=6"></script>
 </body>
