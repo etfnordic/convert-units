@@ -16,8 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultMain = document.getElementById("resultMain");
   const resultSub = document.getElementById("resultSub");
 
-  // Reuse your safe input sanitizer (from converter-engine.js)
+  if (!unitSystem || !metricFields || !imperialFields || !resultMain || !resultSub) {
+    console.error("BMI: Missing required elements.");
+    return;
+  }
+
   const sanitize = (el) => {
+    if (!el) return;
     el.addEventListener("input", () => {
       const cleaned = sanitizeExpressionInput(el.value);
       if (cleaned !== el.value) el.value = cleaned;
@@ -26,10 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   [ageEl, heightCm, weightKg, heightFt, heightIn, weightLb].forEach(sanitize);
 
-  function parseVal(s) {
+  const parseVal = (s) => {
     const v = evalMathExpression((s || "").trim());
     return Number.isFinite(v) ? v : NaN;
-  }
+  };
 
   function bmiCategory(bmi) {
     if (bmi < 18.5) return "Underweight";
@@ -38,8 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return "Obesity";
   }
 
-  // Optional: Deurenberg body fat estimate (needs age + sex)
-  // BF% ≈ 1.20*BMI + 0.23*Age − 10.8*Sex − 5.4  (Sex: male=1, female=0)
+  // Deurenberg estimate (approx), needs age + sex
+  // BF% ≈ 1.20*BMI + 0.23*Age − 10.8*Sex − 5.4   (male=1, female=0)
   function bodyFatEstimate(bmi, age, sex) {
     if (!Number.isFinite(age) || age <= 0) return null;
     const sexNum = (sex === "male") ? 1 : 0;
@@ -47,17 +52,17 @@ document.addEventListener("DOMContentLoaded", () => {
     return Number.isFinite(bf) ? bf : null;
   }
 
-  function updateVisibility() {
+  function setVisibility() {
     const sys = unitSystem.value;
     metricFields.style.display = sys === "metric" ? "" : "none";
     imperialFields.style.display = sys === "imperial" ? "" : "none";
-    calc();
   }
 
   function calc() {
+    setVisibility();
+
     const sys = unitSystem.value;
     const sex = sexEl.value;
-
     const age = parseVal(ageEl.value);
 
     let hMeters = NaN;
@@ -66,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sys === "metric") {
       const hCm = parseVal(heightCm.value);
       const kg = parseVal(weightKg.value);
-
       if (Number.isFinite(hCm) && hCm > 0) hMeters = hCm / 100;
       wKg = kg;
     } else {
@@ -94,18 +98,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const bf = bodyFatEstimate(bmi, age, sex);
     if (bf === null) {
-      resultSub.textContent = "Tip: add age to estimate body fat %.";
+      resultSub.textContent = "Tip: add age to estimate body fat % (approx.).";
     } else {
       resultSub.textContent = `Estimated body fat: ${bf.toFixed(1)}% (approx.)`;
     }
   }
 
-  unitSystem.addEventListener("change", updateVisibility);
+  // Events
+  unitSystem.addEventListener("change", calc);
   sexEl.addEventListener("change", calc);
 
   [ageEl, heightCm, weightKg, heightFt, heightIn, weightLb].forEach(el => {
+    if (!el) return;
     el.addEventListener("input", calc);
   });
 
-  updateVisibility();
+  // Initial
+  calc();
 });
