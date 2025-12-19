@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>BMI Calculator – Metric & Imperial</title>
-  <meta name="description" content="Free BMI calculator for metric and imperial units. Includes optional body fat estimate using age and sex." />
+  <title>BMI Calculator – Metric & Imperial | ConverterBase</title>
+  <meta name="description" content="Free BMI calculator for metric and imperial units. Optional age and sex for an estimated body fat % (approx.)." />
   <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
   <header class="header">
     <div class="container header-inner">
@@ -14,10 +15,9 @@
         <h1>ConverterBase</h1>
         <p>BMI Calculator</p>
       </div>
+
       <nav class="nav">
         <a class="chip" href="index.html">Home</a>
-        <a class="chip" href="about.html">About</a>
-        <a class="chip" href="contact.html">Contact</a>
         <a class="chip" href="privacy-policy.html">Privacy</a>
       </nav>
     </div>
@@ -50,7 +50,7 @@
         <input id="age" inputmode="decimal" placeholder="e.g. 26" />
       </div>
 
-      <!-- Metric -->
+      <!-- Metric fields -->
       <div id="metricFields">
         <div class="form-row">
           <label for="heightCm">Height (cm)</label>
@@ -63,13 +63,16 @@
         </div>
       </div>
 
-      <!-- Imperial -->
+      <!-- Imperial fields -->
       <div id="imperialFields" style="display:none;">
         <div class="form-row">
           <label>Height (ft / in)</label>
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-            <input id="heightFt" inputmode="decimal" placeholder="ft (e.g. 5)" />
-            <input id="heightIn" inputmode="decimal" placeholder="in (e.g. 10)" />
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <input id="heightFt" inputmode="decimal" placeholder="Feet (e.g. 5)" />
+            <input id="heightIn" inputmode="decimal" placeholder="Inches (e.g. 10)" />
+          </div>
+          <div style="margin-top:8px; color: var(--muted); font-size: 0.95rem;">
+            Tip: you can fill only feet or only inches.
           </div>
         </div>
 
@@ -86,6 +89,14 @@
     </section>
 
     <div class="ad-slot">Ad slot (after result). Replace with AdSense later.</div>
+
+    <section class="section">
+      <h3>How BMI works</h3>
+      <p style="color:var(--muted); line-height:1.7; margin:0;">
+        BMI = weight (kg) / height² (m²). BMI is a screening tool and does not directly measure health or body fat.
+        The optional body fat percentage shown is an approximation.
+      </p>
+    </section>
   </main>
 
   <footer class="footer">
@@ -94,8 +105,13 @@
     </div>
   </footer>
 
+  <!-- common footer year -->
   <script src="js/common.js"></script>
+
+  <!-- optional: if you keep math expressions support via engine helpers -->
   <script src="js/converter-engine.js"></script>
+
+  <!-- BMI logic -->
   <script src="js/bmi-advanced.js"></script>
 </body>
 </html>
