@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const value = parseVal(expr);
     if (!Number.isFinite(value)) {
       resultMain.textContent = "Result will appear here…";
-      resultSub.textContent = "Invalid expression. Try: 2*3, 1.5, 2^4, 2*pi.";
+      resultSub.textContent = "Invalid expression.";
       return;
     }
 
