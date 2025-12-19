@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cooking Converter – Cups to grams, tbsp to ml & more</title>
+  <meta name="description" content="Cooking converter for cups, tablespoons, teaspoons, ml and grams. Ingredient-based for better accuracy." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand">
+        <h1>ConverterBase</h1>
+        <p>Cooking Converter (Ingredient-based)</p>
+      </div>
+      <nav class="nav">
+        <a class="chip" href="index.html">Home</a>
+        <a class="chip" href="about.html">About</a>
+        <a class="chip" href="contact.html">Contact</a>
+        <a class="chip" href="privacy-policy.html">Privacy</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="ad-slot">Ad slot (top). Replace with AdSense later.</div>
+
+  <main class="container">
+    <section class="section converter">
+      <h1>Cooking Converter</h1>
+
+      <div class="form-row">
+        <label for="ingredient">Ingredient</label>
+        <select id="ingredient"></select>
+      </div>
+
+      <div class="form-row">
+        <label for="amount">Amount</label>
+        <input id="amount" inputmode="decimal" placeholder="Try: 2*3, 1.5, 2^4, 2*pi" />
+      </div>
+
+      <div class="form-row">
+        <label for="fromUnit">From unit</label>
+        <select id="fromUnit"></select>
+      </div>
+
+      <div class="swap">
+        <button id="swapBtn" type="button" aria-label="Swap units">⇄</button>
+      </div>
+
+      <div class="form-row">
+        <label for="toUnit">To unit</label>
+        <select id="toUnit"></select>
+      </div>
+
+      <div class="result" aria-live="polite">
+        <strong id="resultMain">Result will appear here…</strong>
+        <span id="resultSub">Pick an ingredient and units.</span>
+      </div>
+    </section>
+
+    <div class="ad-slot">Ad slot (after result). Replace with AdSense later.</div>
+
+    <section class="section">
+      <h3>Note</h3>
+      <p style="color:var(--muted); line-height:1.7; margin:0;">
+        Volume ↔ mass conversions depend on ingredient density and are approximate.
+        Cups are US cups (236.588 mL).
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      © <span id="year"></span> ConverterBase • <a href="privacy-policy.html">Privacy Policy</a>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/converter-engine.js"></script>
+  <script src="js/cooking.js"></script>
+</body>
+</html>
