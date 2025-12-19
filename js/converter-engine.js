@@ -283,7 +283,7 @@ function setupFactorConverter(config) {
 
     if (!Number.isFinite(value)) {
       resultMain.textContent = "Result will appear here…";
-      resultSub.textContent = "Invalid expression. Try: 8+4, 2^4, 2*pi.";
+      resultSub.textContent = "Invalid expression.";
       return;
     }
 
