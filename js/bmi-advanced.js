@@ -16,18 +16,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultMain = document.getElementById("resultMain");
   const resultSub = document.getElementById("resultSub");
 
-  // Quick sanity check (if any ID is wrong, we want to know)
-  const required = { unitSystem, sexEl, ageEl, metricFields, imperialFields, heightCm, weightKg, heightFt, heightIn, weightLb, resultMain, resultSub };
+  const bmiScale = document.getElementById("bmiScale");
+  const bmiMarker = document.getElementById("bmiMarker");
+
+  // ✅ Visible proof that script loaded (will show instantly)
+  resultSub.textContent = "BMI script loaded ✅ Now enter your height and weight.";
+
+  // If any id is wrong, stop and show it clearly
+  const required = { unitSystem, sexEl, ageEl, metricFields, imperialFields, heightCm, weightKg, heightFt, heightIn, weightLb, resultMain, resultSub, bmiScale, bmiMarker };
   for (const [k, v] of Object.entries(required)) {
     if (!v) {
-      console.error("BMI: missing element:", k);
+      resultMain.textContent = "BMI error";
+      resultSub.textContent = `Missing element: ${k} (check bmi.html ids)`;
       return;
     }
   }
 
-  // ---- Parsing helpers ----
-  // If your converter-engine.js provides evalMathExpression / sanitizeExpressionInput, use them.
-  // Otherwise fallback to simple numeric parsing (so BMI ALWAYS works).
   const hasEval = typeof window.evalMathExpression === "function";
   const hasSan = typeof window.sanitizeExpressionInput === "function";
 
@@ -37,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const cleaned = window.sanitizeExpressionInput(el.value);
         if (cleaned !== el.value) el.value = cleaned;
       } else {
-        // fallback: allow digits, comma/dot, + - * / ^ ( ) and spaces
         el.value = el.value.replace(/[^0-9+\-*/^()., \t]/g, "");
       }
       calc();
@@ -52,8 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const v = window.evalMathExpression(str);
       return Number.isFinite(v) ? v : NaN;
     }
-
-    // fallback numeric parse (comma -> dot)
     const v = Number(str.replace(",", "."));
     return Number.isFinite(v) ? v : NaN;
   }
@@ -65,8 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return "Obesity";
   }
 
-  // Optional body fat estimate (approx)
-  // BF% ≈ 1.20*BMI + 0.23*Age − 10.8*Sex − 5.4   (male=1, female=0)
   function bodyFatEstimate(bmi, age, sex) {
     if (!Number.isFinite(age) || age <= 0) return null;
     const sexNum = (sex === "male") ? 1 : 0;
@@ -78,6 +77,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const sys = unitSystem.value;
     metricFields.style.display = sys === "metric" ? "" : "none";
     imperialFields.style.display = sys === "imperial" ? "" : "none";
+  }
+
+  function updateScale(bmi) {
+    // Map BMI to a 0–100% track
+    // We'll show range 10..45 for nicer UX; clamp outside.
+    const min = 10;
+    const max = 45;
+    const clamped = Math.max(min, Math.min(max, bmi));
+    const pct = ((clamped - min) / (max - min)) * 100;
+
+    bmiScale.style.display = "";
+    bmiMarker.style.left = `${pct}%`;
   }
 
   function calc() {
@@ -97,10 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (Number.isFinite(hCm) && hCm > 0) hMeters = hCm / 100;
       if (Number.isFinite(kg) && kg > 0) wKg = kg;
     } else {
-      // ✅ allow either field:
-      // - only feet filled -> inches = 0
-      // - only inches filled -> feet = 0
-      // - both -> combine
+      // ✅ allow only feet or only inches
       const ft = parseVal(heightFt.value);
       const inch = parseVal(heightIn.value);
       const lb = parseVal(weightLb.value);
@@ -117,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!Number.isFinite(hMeters) || hMeters <= 0 || !Number.isFinite(wKg) || wKg <= 0) {
       resultMain.textContent = "Result will appear here…";
       resultSub.textContent = "Enter your height and weight.";
+      bmiScale.style.display = "none";
       return;
     }
 
@@ -126,20 +135,17 @@ document.addEventListener("DOMContentLoaded", () => {
     resultMain.textContent = `BMI: ${bmi.toFixed(1)} (${cat})`;
 
     const bf = bodyFatEstimate(bmi, age, sex);
-    if (bf === null) {
-      resultSub.textContent = "Tip: add age to estimate body fat % (approx.).";
-    } else {
-      resultSub.textContent = `Estimated body fat: ${bf.toFixed(1)}% (approx.)`;
-    }
+    resultSub.textContent = (bf === null)
+      ? "Tip: add age to estimate body fat % (approx.)."
+      : `Estimated body fat: ${bf.toFixed(1)}% (approx.)`;
+
+    updateScale(bmi);
   }
 
-  // Events
   unitSystem.addEventListener("change", calc);
   sexEl.addEventListener("change", calc);
 
-  // Sanitize + recalc on input
   [ageEl, heightCm, weightKg, heightFt, heightIn, weightLb].forEach(sanitizeInput);
 
-  // Initial
   calc();
 });
