@@ -12,7 +12,7 @@
     <div class="container header-inner">
       <div class="brand">
         <h1>ConverterBase</h1>
-        <p>BMI Calculator (Metric + Imperial)</p>
+        <p>BMI Calculator</p>
       </div>
       <nav class="nav">
         <a class="chip" href="index.html">Home</a>
@@ -47,35 +47,35 @@
 
       <div class="form-row">
         <label for="age">Age (optional – improves body fat estimate)</label>
-        <input id="age" inputmode="decimal" placeholder="e.g. 28" />
+        <input id="age" inputmode="decimal" placeholder="e.g. 26" />
       </div>
 
-      <!-- Metric inputs -->
+      <!-- Metric -->
       <div id="metricFields">
         <div class="form-row">
           <label for="heightCm">Height (cm)</label>
-          <input id="heightCm" inputmode="decimal" placeholder="e.g. 180" />
+          <input id="heightCm" inputmode="decimal" placeholder="e.g. 178" />
         </div>
 
         <div class="form-row">
           <label for="weightKg">Weight (kg)</label>
-          <input id="weightKg" inputmode="decimal" placeholder="e.g. 75" />
+          <input id="weightKg" inputmode="decimal" placeholder="e.g. 78" />
         </div>
       </div>
 
-      <!-- Imperial inputs -->
+      <!-- Imperial -->
       <div id="imperialFields" style="display:none;">
         <div class="form-row">
           <label>Height (ft / in)</label>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
             <input id="heightFt" inputmode="decimal" placeholder="ft (e.g. 5)" />
-            <input id="heightIn" inputmode="decimal" placeholder="in (e.g. 11)" />
+            <input id="heightIn" inputmode="decimal" placeholder="in (e.g. 10)" />
           </div>
         </div>
 
         <div class="form-row">
           <label for="weightLb">Weight (lb)</label>
-          <input id="weightLb" inputmode="decimal" placeholder="e.g. 165" />
+          <input id="weightLb" inputmode="decimal" placeholder="e.g. 172" />
         </div>
       </div>
 
@@ -86,13 +86,6 @@
     </section>
 
     <div class="ad-slot">Ad slot (after result). Replace with AdSense later.</div>
-
-    <section class="section">
-      <h3>How BMI works</h3>
-      <p style="color:var(--muted); line-height:1.7; margin:0;">
-        BMI = weight (kg) / height² (m²). BMI is a screening tool and does not directly measure body fat or health.
-      </p>
-    </section>
   </main>
 
   <footer class="footer">
@@ -101,10 +94,8 @@
     </div>
   </footer>
 
-  <!-- Use engine for math-input parsing (8+4, 2^4, pi, etc.) -->
   <script src="js/common.js"></script>
   <script src="js/converter-engine.js"></script>
   <script src="js/bmi-advanced.js"></script>
 </body>
 </html>
-
