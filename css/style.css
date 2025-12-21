@@ -175,4 +175,24 @@ select option {
   font-size: 13px;
   text-align:center;
 }
+/* === Fix footer positioning on short pages === */
+html, body {
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main content should expand to push footer down */
+main {
+  flex: 1 0 auto;
+}
+
+/* Footer stays at the bottom */
+.footer {
+  margin-top: auto;
+}
 
