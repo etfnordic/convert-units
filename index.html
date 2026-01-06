@@ -3,34 +3,44 @@
 <head>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3468184357715504"
      crossorigin="anonymous"></script>
-  <!-- Favicons -->
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-
-<!-- App icons -->
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
-
-<!-- Theme color -->
-<meta name="theme-color" content="#000000">
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Convert Units – Length, Weight, Temperature, Speed & More</title>
-  <meta name="description" content="Fast and free unit converters: miles to km, °C to °F, kg to lbs, km/h to mph, BMI, date difference and more." />
-  <link rel="stylesheet" href="css/style.css" />
+  <title>ConverterBase — Fast Unit Converter (Length, Weight, Temperature & more)</title>
+  <meta name="description" content="Instant unit conversions: miles to km, °C to °F, kg to lb, mph to km/h, BMI, date difference and more. Fast, free and accurate." />
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "name":"ConverterBase",
+    "url":"https://converterbase.com/",
+    "potentialAction": {
+      "@type":"SearchAction",
+      "target":"https://converterbase.com/?q={search_term_string}",
+      "query-input":"required name=search_term_string"
+    }
+  }
+  </script>
 </head>
 <body>
   <header class="header">
     <div class="container header-inner">
       <div class="brand">
         <h1>ConverterBase</h1>
-        <p>Fast, free and accurate conversions</p>
+        <p>Fast, clean and accurate conversions</p>
       </div>
       <nav class="nav">
-        <a class="chip" href="about.html">About</a>
-        <a class="chip" href="contact.html">Contact</a>
-        <a class="chip" href="privacy.html">Privacy</a>
+        <a class="pill" href="/about.html">About</a>
+        <a class="pill" href="/contact.html">Contact</a>
       </nav>
     </div>
   </header>
@@ -38,65 +48,78 @@
   <main class="container">
     <section class="hero">
       <h2>Unit Converters</h2>
-      <p>
-        Convert miles to km, °C to °F, kg to lbs, km/h to mph, and many more.
-        Choose a converter below.
-      </p>
+      <p>Type a conversion like <strong>“15 km to miles”</strong> or choose a converter below.</p>
+
+      <div class="search-wrap">
+        <div class="search" role="search">
+          <input id="smartSearch" autocomplete="off" placeholder="Try: 15 km to miles, 72 kg to lb, 20 °C to °F…" />
+          <span class="kbd">Enter</span>
+        </div>
+        <div id="quickResult" class="quick-result" role="button" tabindex="0" aria-label="Open converter">
+          <strong id="qrMain">Result will appear here…</strong>
+          <span id="qrSub">Tip: type “value unit to unit”.</span>
+        </div>
+      </div>
     </section>
 
-    <!-- AdSense plats 1 (över fold) -->
-    <div class="ad-slot">Ad slot (top). Replace with AdSense later.</div>
+    <div class="ad-slot" data-ad-slot="" data-min-height="100px">
+      Ad slot (top). Add your AdSense slot id in data-ad-slot.
+    </div>
 
     <section class="section">
-      <h3>New! <span class="badge">Popular</span></h3>
+      <h3>Popular <span class="badge">New</span></h3>
       <div class="grid">
-        <a class="cardlink" href="converters/date-difference.html">Date Difference</a>
-        <a class="cardlink" href="converters/bmi.html">BMI Calculator</a>
-        <a class="cardlink" href="converters/cooking.html">Cooking Converter</a>
+        <a class="cardlink" href="/converters/date-difference.html">Date Difference</a>
+        <a class="cardlink" href="/converters/bmi.html">BMI Calculator</a>
+        <a class="cardlink" href="/converters/cooking.html">Cooking Converter</a>
       </div>
     </section>
 
     <section class="section">
       <h3>Common</h3>
       <div class="grid">
-        <a class="cardlink" href="converters/length.html">Length</a>
-        <a class="cardlink" href="converters/area.html">Area</a>
-        <a class="cardlink" href="converters/weight.html">Weight</a>
-        <a class="cardlink" href="converters/volume.html">Volume</a>
-        <a class="cardlink" href="converters/speed.html">Speed</a>
-        <a class="cardlink" href="converters/time.html">Time</a>
-        <a class="cardlink" href="converters/temperature.html">Temperature</a>
+        <a class="cardlink" href="/converters/length.html">Length</a>
+        <a class="cardlink" href="/converters/area.html">Area</a>
+        <a class="cardlink" href="/converters/weight.html">Weight</a>
+        <a class="cardlink" href="/converters/volume.html">Volume</a>
+        <a class="cardlink" href="/converters/speed.html">Speed</a>
+        <a class="cardlink" href="/converters/time.html">Time</a>
+        <a class="cardlink" href="/converters/temperature.html">Temperature</a>
       </div>
     </section>
 
     <section class="section">
       <h3>More</h3>
       <div class="grid">
-        <a class="cardlink" href="converters/pressure.html">Pressure</a>
-        <a class="cardlink" href="converters/fuel-consumption.html">Fuel Consumption</a>
-        <a class="cardlink" href="converters/angle.html">Angle</a>
+        <a class="cardlink" href="/converters/pressure.html">Pressure</a>
+        <a class="cardlink" href="/converters/fuel-consumption.html">Fuel Consumption</a>
+        <a class="cardlink" href="/converters/angle.html">Angle</a>
       </div>
     </section>
 
-    <!-- AdSense plats 2 (i mitten / efter fler klick) -->
-    <div class="ad-slot">Ad slot (mid). Replace with AdSense later.</div>
+    <div class="ad-slot" data-ad-slot="" data-min-height="120px">
+      Ad slot (mid). Add your AdSense slot id in data-ad-slot.
+    </div>
+
+    <section class="section prose">
+      <h3>Why ConverterBase?</h3>
+      <p>ConverterBase is built to be fast and distraction-free: type a value, pick units, and get results instantly.</p>
+      <p>Tip: Bookmark your most used converter, or use the homepage smart search for one-line conversions.</p>
+    </section>
   </main>
 
   <footer class="footer">
     <div class="container">
-      © <span id="year"></span> ConverterBase • <a href="/about.html">About |</a>
-      <a href="/contact.html">Contact |</a>
-      <a href="/privacy.html">Privacy Policy |</a>
-      <a href="/terms.html">Terms of Service</a>
+      © <span id="year"></span> ConverterBase •
+      <a href="/about.html">About</a> •
+      <a href="/contact.html">Contact</a> •
+      <a href="/privacy-policy.html">Privacy Policy</a> •
+      <a href="/terms.html">Terms</a>
     </div>
   </footer>
 
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
-
-
-  <script src="js/common.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/ads.js" defer></script>
+  <script src="/js/search.js" defer></script>
 </body>
 </html>
-
