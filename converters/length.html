@@ -5,9 +5,37 @@
      crossorigin="anonymous"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Length Converter – Convert meters to inches, feet, yards & more</title>
-  <meta name="description" content="Free length converter. Convert meters, centimeters, inches, feet, yards and miles instantly." />
+
+  <title>Length Converter | ConverterBase</title>
+  <meta name="description" content="Convert meters, centimeters, inches, feet, yards and miles instantly. Fast, free and accurate." />
+
   <link rel="stylesheet" href="/css/style.css" />
+
+  <!-- Breadcrumb schema -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"BreadcrumbList",
+    "itemListElement":[
+      {"@type":"ListItem","position":1,"name":"Home","item":"https://converterbase.com/"},
+      {"@type":"ListItem","position":2,"name":"Length Converter","item":"https://converterbase.com/converters/length.html"}
+    ]
+  }
+  </script>
+
+  <!-- FAQ schema (edit per page) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"How many feet are in a meter?",
+       "acceptedAnswer":{"@type":"Answer","text":"1 meter is approximately 3.28084 feet."}},
+      {"@type":"Question","name":"How do I convert miles to kilometers?",
+       "acceptedAnswer":{"@type":"Answer","text":"Multiply miles by 1.609344 to get kilometers."}}
+    ]
+  }
+  </script>
 </head>
 <body>
   <header class="header">
@@ -17,13 +45,14 @@
         <p>Length Converter</p>
       </div>
       <nav class="nav">
-        <a class="chip" href="/index.html">Home</a>
+        <a class="pill" href="/index.html">Home</a>
       </nav>
     </div>
   </header>
 
-  <!-- AdSense plats 1 -->
-  <div class="ad-slot">Ad slot (top). Replace with AdSense later.</div>
+  <div class="ad-slot" data-ad-slot="" data-min-height="100px">
+    Ad slot (top). Add your AdSense slot id in data-ad-slot.
+  </div>
 
   <main class="container">
     <section class="section converter">
@@ -51,26 +80,62 @@
       <div class="result" aria-live="polite">
         <strong id="resultMain">Result will appear here…</strong>
         <span id="resultSub">Enter a value to convert.</span>
+
+        <div class="actions">
+          <button class="btn primary" id="copyBtn" type="button">Copy result</button>
+          <a class="btn" href="/index.html">All converters</a>
+        </div>
       </div>
     </section>
 
-    <!-- AdSense plats 2 (efter interaktion) -->
-    <div class="ad-slot">Ad slot (after result). Replace with AdSense later.</div>
+    <div class="ad-slot" data-ad-slot="" data-min-height="120px">
+      Ad slot (after result). Add your AdSense slot id in data-ad-slot.
+    </div>
 
+    <section class="section prose">
+      <h3>How it works</h3>
+      <p>This converter updates in real time. Enter a value, choose the units, and the result appears instantly. Use the swap button to reverse the units.</p>
+
+      <h3>FAQ</h3>
+      <h3>How many feet are in a meter?</h3>
+      <p>1 meter is approximately 3.28084 feet.</p>
+      <h3>How do I convert miles to kilometers?</h3>
+      <p>Multiply miles by 1.609344 to get kilometers.</p>
+    </section>
   </main>
 
   <footer class="footer">
     <div class="container">
-      © <span id="year"></span> ConverterBase • <a href="/about.html">About |</a>
-      <a href="/contact.html">Contact |</a>
-      <a href="/privacy.html">Privacy Policy |</a>
-      <a href="/terms.html">Terms of Service</a>
+      © <span id="year"></span> ConverterBase •
+      <a href="/about.html">About</a> •
+      <a href="/contact.html">Contact</a> •
+      <a href="/privacy-policy.html">Privacy Policy</a> •
+      <a href="/terms.html">Terms</a>
     </div>
   </footer>
 
   <script src="/js/common.js"></script>
+  <script src="/js/ads.js" defer></script>
+
+  <script>
+    window.cbPrefill && window.cbPrefill();
+
+    (function(){
+      const btn = document.getElementById("copyBtn");
+      const main = document.getElementById("resultMain");
+      const sub = document.getElementById("resultSub");
+      if(!btn || !main) return;
+      btn.addEventListener("click", async () => {
+        const text = (main.textContent || "").trim() + (sub ? ("\n" + sub.textContent.trim()) : "");
+        const ok = await (window.cbCopyText ? window.cbCopyText(text) : Promise.resolve(false));
+        btn.textContent = ok ? "Copied!" : "Copy failed";
+        setTimeout(()=>btn.textContent="Copy result", 1200);
+      });
+    })();
+  </script>
+
+  <!-- IMPORTANT: keep your existing scripts -->
   <script src="/js/converter-engine.js"></script>
   <script src="/js/length.js"></script>
 </body>
 </html>
-
